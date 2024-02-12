@@ -24,20 +24,23 @@ class RecaptchaV3ServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/recaptchav3.php' => config_path('recaptchav3.php'),
+                __DIR__ . '/../config/recaptchav3.php' => config_path('recaptchav3.php'),
             ], 'config');
         }
-        $this->mergeConfigFrom(__DIR__.'/../config/recaptchav3.php', 'recaptchav3');
+        $this->mergeConfigFrom(__DIR__ . '/../config/recaptchav3.php', 'recaptchav3');
 
         $this->app['validator']->extend('recaptchav3', function ($attribute, $value, $paramaters) {
+            if (!config('recaptchav3.is_enabled', false)) {
+                return true;
+            }
             $action = $paramaters[0];
             $minScore = isset($paramaters[1]) ? (float)$paramaters[1] : 0.5;
             $score = RecaptchaV3Facade::verify($value, $action);
             return $score && $score >= $minScore;
         });
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'recaptchav3');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'recaptchav3');
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/recaptchav3'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/recaptchav3'),
         ]);
     }
 
@@ -48,6 +51,7 @@ class RecaptchaV3ServiceProvider extends ServiceProvider
     {
         $this->app->singleton(RecaptchaV3::class);
     }
+
     /**
      * Get the services provided by the provider.
      *
