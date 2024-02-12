@@ -59,5 +59,22 @@ class ValidationTest extends TestCase
 
 
     }
+      /** @test */
+        public function it_doesnt_run_server_side_validation_if_config_is_disabled()
+        {
+            RecaptchaV3::shouldReceive('verify')
+                ->never();
+            config(['recaptchav3.is_enabled' => false]);
+            $rules = [
+                'g-recapctha-response' => 'required|recaptchav3:register,0.3'
+            ];
 
+
+            $data = [
+                'g-recapctha-response' => 'valid_token'
+            ];
+
+            $v = $this->app['validator']->make($data, $rules);
+            $this->assertTrue($v->passes());
+        }
 }

@@ -23,6 +23,7 @@ Add `RECAPTCHAV3_SITEKEY` and `RECAPTCHAV3_SECRET` to your `.env` file. (You can
 ```
 RECAPTCHAV3_SITEKEY=sitekey
 RECAPTCHAV3_SECRET=secret
+RECAPTCHAV3_ENABLED=true // if false recaptcha will be disabled and validation will always return true
 ```
 
 Optionally, you can publish the config file:
