@@ -107,9 +107,6 @@ class RecaptchaV3
      */
     public function initJs()
     {
-        if (!config('recaptchav3.is_enabled', false)) {
-            return '';
-        }
         return '<script src="' . $this->origin . '/api.js?hl=' . $this->locale . '&render=' . $this->sitekey . '"></script>';
     }
 
